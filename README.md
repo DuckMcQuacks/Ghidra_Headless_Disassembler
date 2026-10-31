@@ -1,9 +1,9 @@
 # Ghidra_Headless_Disassembler
 Prerequisits:
 An offifical ghidra release file (Already Included)
-[Python 3.10] (https://www.python.org/downloads/) or later 
-[Install JDK 25 64bit] (https://adoptium.net/en-GB/temurin/releases),
-[Build data and AI skills with DataCamp](https://www.datacamp.com)
+[Python 3.10](https://www.python.org/downloads/) or later 
+Install [JDK 25 64bit](https://adoptium.net/en-GB/temurin/releases),
+
 
 Usage:
 The program by default will disassemble all files in a folder into an output folder.
