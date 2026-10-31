@@ -1,7 +1,9 @@
 # Ghidra_Headless_Disassembler
 Prerequisits :
 An offifical ghidra release file (Already Included)
-[Python 3.10](https://www.python.org/downloads/) or later 
+
+[Python 3.10](https://www.python.org/downloads/) or later.
+
 Install [JDK 25 64bit](https://adoptium.net/en-GB/temurin/releases),
 
 
