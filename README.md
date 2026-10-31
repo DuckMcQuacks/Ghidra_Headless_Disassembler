@@ -9,6 +9,7 @@ Install [JDK 25 64bit](https://adoptium.net/en-GB/temurin/releases),
 Quick Prerequisit Install:
 
 sudo apt update
+
 sudo apt install -y python3 python3-pip default-jdk
 
 
