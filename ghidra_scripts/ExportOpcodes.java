@@ -26,22 +26,12 @@ public class ExportOpcodes extends GhidraScript {
         Listing listing = currentProgram.getListing();
         long count = 0;
         try (BufferedWriter writer = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
-            writer.write("ADDRESS\tBYTES\tINSTRUCTION");
-            writer.newLine();
-
             InstructionIterator instructions = listing.getInstructions(true);
             while (instructions.hasNext() && !monitor.isCancelled()) {
                 Instruction instruction = instructions.next();
-                writer.write(instruction.getAddress().toString());
-                writer.write('\t');
                 writer.write(bytesToHex(instruction.getBytes()));
                 writer.write('\t');
                 writer.write(instruction.getMnemonicString());
-                String operands = operandText(instruction);
-                if (!operands.isEmpty()) {
-                    writer.write(' ');
-                    writer.write(operands);
-                }
                 writer.newLine();
                 count++;
             }
