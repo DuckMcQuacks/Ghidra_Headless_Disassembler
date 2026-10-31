@@ -6,6 +6,10 @@ An offifical ghidra release file (Already Included)
 
 Install [JDK 25 64bit](https://adoptium.net/en-GB/temurin/releases),
 
+Quick Prerequisit Install:
+sudo apt update
+sudo apt install -y python3 python3-pip default-jdk
+
 
 Usage:
 The program by default will disassemble all files in a folder into an output folder.
