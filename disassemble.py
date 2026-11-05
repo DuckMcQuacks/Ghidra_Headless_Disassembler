@@ -95,20 +95,20 @@ def disassemble(analyzer: Path, executable: Path, output_txt: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Disassemble EXE files with Ghidra and export instructions to text files."
+        description="Disassemble files with Ghidra and export instructions to text files."
     )
     parser.add_argument(
         "--input",
         type=Path,
         nargs="?",
         default=DEFAULT_INPUT_DIR,
-        help="An .exe file or a directory containing .exe files (searched recursively).",
+        help="A file or a directory containing files to disassemble (searched recursively).",
     )
     parser.add_argument(
         "--output",
         type=Path,
         help=(
-            "Text file for a single EXE, or output directory for a directory input. "
+            "Text file for a single input, or output directory for a directory input. "
             f"Defaults to {DEFAULT_OUTPUT_DIR}."
         ),
     )
@@ -133,12 +133,10 @@ def main() -> int:
         executables = [source]
         output_root = None
     elif source.is_dir():
-        executables = sorted(
-            path for path in source.rglob("*") if path.is_file() and path.suffix.lower() == ".exe"
-        )
+        executables = sorted(path for path in source.rglob("*") if path.is_file())
         output_root = args.output.expanduser().resolve() if args.output else DEFAULT_OUTPUT_DIR
         if not executables:
-            print(f"No .exe files found in {source}", file=sys.stderr)
+            print(f"No files found in {source}", file=sys.stderr)
             return 1
     else:
         print(f"Input does not exist: {source}", file=sys.stderr)
@@ -151,10 +149,11 @@ def main() -> int:
                 output_txt = (
                     args.output.expanduser().resolve()
                     if args.output
-                    else DEFAULT_OUTPUT_DIR / f"{executable.stem}.txt"
+                    else DEFAULT_OUTPUT_DIR / f"{executable.name}.txt"
                 )
             else:
-                relative_path = executable.relative_to(source).with_suffix(".txt")
+                relative_path = executable.relative_to(source)
+                relative_path = relative_path.with_name(f"{relative_path.name}.txt")
                 output_txt = output_root / relative_path
 
             print(f"Disassembling {executable} -> {output_txt}")
