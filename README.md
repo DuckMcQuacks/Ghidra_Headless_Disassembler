@@ -14,6 +14,9 @@ sudo apt install -y python3 python3-pip default-jdk
 
 
 Usage:
+
+Works with any file even without .exe extension, if it did have .exe extension it includes it as a suffix to the original file name, for example: example.exe -> example.exe.txt, or example -> example.txt
+
 The program by default will disassemble all files in a folder into an output folder.
 "python disassemble.py" defaults to input folder being "ToDisassemble", output folder "Disassembled".
 
