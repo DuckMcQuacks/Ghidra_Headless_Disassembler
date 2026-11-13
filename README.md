@@ -28,3 +28,5 @@ The program by default will disassemble all files in a folder into an output fol
 
 Limitations:
 The program does not check whether a file to be disassembled is already present in the output folder, it will complete the disassembly and then replace the file already present in the output folder. If the goal is to disassemble in multiple batches its necessary to create multiple input folders and one output folder for best results.
+
+If Ghidra fails on an individual file, the program reports the error and continues with the next file. It exits with status 1 if any files failed.

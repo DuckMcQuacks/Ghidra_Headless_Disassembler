@@ -144,25 +144,38 @@ def main() -> int:
 
     try:
         analyzer = find_analyze_headless(args.ghidra_home, args.analyze_headless)
-        for executable in executables:
-            if output_root is None:
-                output_txt = (
-                    args.output.expanduser().resolve()
-                    if args.output
-                    else DEFAULT_OUTPUT_DIR / f"{executable.name}.txt"
-                )
-            else:
-                relative_path = executable.relative_to(source)
-                relative_path = relative_path.with_name(f"{relative_path.name}.txt")
-                output_txt = output_root / relative_path
-
-            print(f"Disassembling {executable} -> {output_txt}")
-            disassemble(analyzer, executable, output_txt)
     except (FileNotFoundError, RuntimeError, OSError) as error:
         print(f"Error: {error}", file=sys.stderr)
         return 1
 
-    print(f"Finished: {len(executables)} file(s) disassembled.")
+    failed = 0
+    for executable in executables:
+        if output_root is None:
+            output_txt = (
+                args.output.expanduser().resolve()
+                if args.output
+                else DEFAULT_OUTPUT_DIR / f"{executable.name}.txt"
+            )
+        else:
+            relative_path = executable.relative_to(source)
+            relative_path = relative_path.with_name(f"{relative_path.name}.txt")
+            output_txt = output_root / relative_path
+
+        print(f"Disassembling {executable} -> {output_txt}")
+        try:
+            disassemble(analyzer, executable, output_txt)
+        except (RuntimeError, OSError) as error:
+            print(f"Error: skipping {executable}: {error}", file=sys.stderr)
+            failed += 1
+
+    succeeded = len(executables) - failed
+    if failed:
+        print(
+            f"Finished: {succeeded} file(s) disassembled; {failed} file(s) failed."
+        )
+        return 1
+
+    print(f"Finished: {succeeded} file(s) disassembled.")
     return 0
 
 
