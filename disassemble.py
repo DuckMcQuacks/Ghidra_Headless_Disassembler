@@ -152,7 +152,7 @@ def main() -> int:
     for executable in executables:
         if output_root is None:
             output_csv = (
-                args.output.expanduser().resolve()
+                args.output.expanduser().resolve().with_suffix(".csv")
                 if args.output
                 else DEFAULT_OUTPUT_DIR / f"{executable.name}.csv"
             )
