@@ -67,8 +67,8 @@ def find_analyze_headless(ghidra_home: Path | None, explicit_path: Path | None) 
     )
 
 
-def disassemble(analyzer: Path, executable: Path, output_txt: Path) -> None:
-    output_txt.parent.mkdir(parents=True, exist_ok=True)
+def disassemble(analyzer: Path, executable: Path, output_csv: Path) -> None:
+    output_csv.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="ghidra-headless-") as project_dir:
         command = [
             str(analyzer),
@@ -80,22 +80,22 @@ def disassemble(analyzer: Path, executable: Path, output_txt: Path) -> None:
             str(GHIDRA_SCRIPT_DIR),
             "-postScript",
             "ExportOpcodes.java",
-            str(output_txt.resolve()),
+            str(output_csv.resolve()),
         ]
         result = subprocess.run(command, check=False)
         if result.returncode != 0:
             raise RuntimeError(
                 f"Ghidra failed for {executable} (exit code {result.returncode})."
             )
-        if not output_txt.is_file():
+        if not output_csv.is_file():
             raise RuntimeError(
-            f"Ghidra completed but did not create the expected output: {output_txt}"
+                f"Ghidra completed but did not create the expected output: {output_csv}"
             )
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Disassemble files with Ghidra and export instructions to text files."
+        description="Disassemble files with Ghidra and export instructions to CSV files."
     )
     parser.add_argument(
         "--input",
@@ -108,7 +108,7 @@ def main() -> int:
         "--output",
         type=Path,
         help=(
-            "Text file for a single input, or output directory for a directory input. "
+            "CSV file for a single input, or output directory for a directory input. "
             f"Defaults to {DEFAULT_OUTPUT_DIR}."
         ),
     )
@@ -151,19 +151,19 @@ def main() -> int:
     failed = 0
     for executable in executables:
         if output_root is None:
-            output_txt = (
+            output_csv = (
                 args.output.expanduser().resolve()
                 if args.output
-                else DEFAULT_OUTPUT_DIR / f"{executable.name}.txt"
+                else DEFAULT_OUTPUT_DIR / f"{executable.name}.csv"
             )
         else:
             relative_path = executable.relative_to(source)
-            relative_path = relative_path.with_name(f"{relative_path.name}.txt")
-            output_txt = output_root / relative_path
+            relative_path = relative_path.with_name(f"{relative_path.name}.csv")
+            output_csv = output_root / relative_path
 
-        print(f"Disassembling {executable} -> {output_txt}")
+        print(f"Disassembling {executable} -> {output_csv}")
         try:
-            disassemble(analyzer, executable, output_txt)
+            disassemble(analyzer, executable, output_csv)
         except (RuntimeError, OSError) as error:
             print(f"Error: skipping {executable}: {error}", file=sys.stderr)
             failed += 1

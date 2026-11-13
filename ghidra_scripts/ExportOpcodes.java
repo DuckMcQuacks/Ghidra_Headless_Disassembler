@@ -1,4 +1,4 @@
-// Export the instructions produced by Ghidra's analysis as a text file.
+// Export the instructions produced by Ghidra's analysis as a semicolon-delimited CSV file.
 import ghidra.app.script.GhidraScript;
 import ghidra.program.model.listing.Instruction;
 import ghidra.program.model.listing.InstructionIterator;
@@ -14,7 +14,7 @@ public class ExportOpcodes extends GhidraScript {
     protected void run() throws Exception {
         String[] args = getScriptArgs();
         if (args.length != 1) {
-            throw new IllegalArgumentException("Usage: ExportOpcodes.java <output.txt>");
+            throw new IllegalArgumentException("Usage: ExportOpcodes.java <output.csv>");
         }
 
         Path output = Paths.get(args[0]);

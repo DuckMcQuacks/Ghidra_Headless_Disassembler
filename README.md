@@ -15,11 +15,11 @@ sudo apt install -y python3 python3-pip default-jdk
 
 Usage:
 
-Works with any file even without .exe extension, if it did have .exe extension it includes it as a suffix to the original file name, for example: example.exe -> example.exe.txt, or example -> example.txt
+Works with any file even without .exe extension, if it did have .exe extension it includes it as a suffix to the original file name, for example: example.exe -> example.exe.csv, or example -> example.csv
 
 The program by default will disassemble all files in a folder into an output folder.
 "python disassemble.py" defaults to input folder being "ToDisassemble", output folder "Disassembled".
-Each output line contains the instruction address, bytes, mnemonic, and operands, separated by semicolons.
+Each output is a semicolon-delimited CSV file. Rows contain the instruction address, bytes, mnemonic, and operands.
 
 "python disassemble.py --input InputFolderPath" It can be used to disassemble the files in a specific folder by substituting said folders path into InputFolderPath, it takes both relative and absolute paths. Its output will still go into Disassembled.
 
