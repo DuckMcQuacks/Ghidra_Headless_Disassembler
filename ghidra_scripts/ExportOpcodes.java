@@ -29,9 +29,13 @@ public class ExportOpcodes extends GhidraScript {
             InstructionIterator instructions = listing.getInstructions(true);
             while (instructions.hasNext() && !monitor.isCancelled()) {
                 Instruction instruction = instructions.next();
+                writer.write(instruction.getAddress().toString());
+                writer.write(';');
                 writer.write(bytesToHex(instruction.getBytes()));
-                writer.write('\t');
+                writer.write(';');
                 writer.write(instruction.getMnemonicString());
+                writer.write(';');
+                writer.write(operandText(instruction));
                 writer.newLine();
                 count++;
             }
