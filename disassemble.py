@@ -14,7 +14,7 @@ from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 GHIDRA_SCRIPT_DIR = SCRIPT_DIR / "ghidra_scripts"
-GHIDRA_HOME = Path("./ghidra_12.2_PUBLIC")
+GHIDRA_HOME = SCRIPT_DIR / "ghidra_12.2_PUBLIC"
 DEFAULT_INPUT_DIR = SCRIPT_DIR / "ToDisassemble"
 DEFAULT_OUTPUT_DIR = SCRIPT_DIR / "Disassembled"
 
